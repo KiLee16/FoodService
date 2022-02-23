@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cogent.fooddeliveryapp.dto.User;
+import com.cogent.fooddeliveryapp.exception.NoDataFoundException;
 import com.cogent.fooddeliveryapp.repository.UserRepository;
 import com.cogent.fooddeliveryapp.service.UserService;
 
@@ -43,10 +44,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUser(User user) {
+	public User updateUser(User user, long id ) {
 		// TODO Auto-generated method stub
 //		User user2 = userRepository.findById(user.getId()).get();
 //		userRepository.saveAll(null)
+		User prevUser = userRepository.findById(id).orElseThrow(()-> new NoDataFoundException("No user with this id"));
+		prevUser.setAddresses(user.getAddresses());
+		prevUser.setDoj(user.getDoj());
+		prevUser.setEmail(user.getEmail());
+		prevUser.setUsername(user.getUsername());
+		prevUser.setPassword(user.getPassword());
+		prevUser.setRoles(user.getRoles());
 		return userRepository.save(user);
 	}
 

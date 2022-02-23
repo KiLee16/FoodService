@@ -52,7 +52,7 @@ public class User {
 	
 	private String password;
 
-	private String name;
+	private String username;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate doj = LocalDate.now();
 	

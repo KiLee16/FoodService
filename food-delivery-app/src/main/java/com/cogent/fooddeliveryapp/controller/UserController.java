@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cogent.fooddeliveryapp.IdNotFoundException;
@@ -67,7 +69,7 @@ public class UserController {
 		// DTO ===> UserResponse()
 		UserResponse userResponse = new UserResponse();
 		userResponse.setEmail(user.getEmail());
-		userResponse.setName(user.getName());
+		userResponse.setName(user.getUsername());
 		Set<String> roles = new HashSet<>();
 		userResponse.setDoj(user.getDoj());
 		user.getRoles().forEach(e2 -> {
@@ -97,7 +99,7 @@ public class UserController {
 		list.forEach(e -> {
 			UserResponse userResponse = new UserResponse();
 			userResponse.setEmail(e.getEmail());
-			userResponse.setName(e.getName());
+			userResponse.setName(e.getUsername());
 			Set<String> roles = new HashSet<>();
 			userResponse.setDoj(e.getDoj());
 			e.getRoles().forEach(e2 -> {
@@ -173,7 +175,7 @@ public class UserController {
 		});
 		user.setAddresses(addresses);
 		user.setEmail(signupRequest.getEmail());
-		user.setName(signupRequest.getName());
+		user.setUsername(signupRequest.getName());
 		user.setPassword(signupRequest.getPassword());
 		user.setRoles(roles);
 		user.setDoj(signupRequest.getDoj());
@@ -184,15 +186,15 @@ public class UserController {
 
 	}
 
-	@PostMapping("/update")
-	public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateRequest info) {
+	@PutMapping("/employees/{id}")
+	public ResponseEntity<?> updateUser(@PathVariable(value = "id") Long id, @Valid @RequestBody UpdateRequest info) {
 
 		User previousData = userService.getUserById(info.getId()).orElseThrow(() -> new MyOwnException("no user"));
 		User user = new User();
 		user.setDoj(info.getDoj());
 		user.setEmail(info.getEmail());
 
-		user.setName(info.getName());
+		user.setUsername(info.getName());
 		user.setPassword(info.getPassword());
 		Set<Address> addresses = new HashSet<>();
 		info.getAddress().forEach(e -> {
@@ -233,9 +235,12 @@ public class UserController {
 
 		});
 		user.setRoles(roles);
-		userService.updateUser(user);
+		User updated = userService.updateUser(user, id);
+		
 		return ResponseEntity.status(201).body(user);
 
 	}
+	
+	
 
 }

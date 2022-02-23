@@ -11,7 +11,7 @@ public interface UserService {
 	public Optional<User> getUserById(long id);
 	public List<User> getAllUsers();
 	public String deleteUserById(long id);
-	public User updateUser(User user);
+	public User updateUser(User user, long id );
 	public List<User> getAllUsersAscOrder();
 	public List<User> getAllUsersDescOrder();
 	public boolean existsById(long id);

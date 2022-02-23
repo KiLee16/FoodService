@@ -2,7 +2,7 @@ package com.cogent.fooddeliveryapp.exception;
 
 /**
  * @author : Ki Beom Lee
- * @time : 2022. 2. 21.-¿ÀÈÄ 11:42:16
+ * @time : 2022. 2. 21.-ï¿½ï¿½ï¿½ï¿½ 11:42:16
  */
 public class MyOwnException extends RuntimeException {
 	public MyOwnException(String e) {
