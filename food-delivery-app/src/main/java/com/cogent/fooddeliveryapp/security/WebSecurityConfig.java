@@ -3,20 +3,21 @@ package com.cogent.fooddeliveryapp.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.cogent.fooddeliveryapp.advice.ControllerAdvice;
 import com.cogent.fooddeliveryapp.security.jwt.AuthEntryPointJwt;
 import com.cogent.fooddeliveryapp.security.jwt.AuthTokenFilter;
 import com.cogent.fooddeliveryapp.security.services.UserDetailsServiceImpl;
-import com.cogent.fooddeliveryapp.security.services.UserDetailsImpl;
 
 /**
  * @author : Ki Beom Lee
@@ -30,10 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 
 	@Autowired
-	private AuthEntryPointJwt authEntryPointJwt;
-
-	@Bean
+	private AuthEntryPointJwt unauthorizedHandler;
+//	@Autowired
+//	private ControllerAdvice unauthorizedHandler ;
 //	@Scope("prototype") for more than one 
+	@Bean
 	public AuthTokenFilter authenticationJwtTokenFilter() {
 		return new AuthTokenFilter();
 	}
@@ -65,9 +67,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		//apply token validation for end points.
 		//cors:
 		//
+		http.cors().and().csrf().disable().exceptionHandling() // end points 
+		.authenticationEntryPoint(unauthorizedHandler)
+		.and()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.authorizeRequests().antMatchers("/api/auth/**").permitAll()
+		.antMatchers("/api/food/**").permitAll().anyRequest().authenticated();
 		
 		
-		super.configure(http);
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		
+		
+	
 	}
 
 }

@@ -21,7 +21,7 @@ public class UserResponse {
 	private String email;
 	
 	@NotBlank
-	private String name;
+	private String username;
 	//@NotEmpty
 	private Set<Address> address;
 	@JsonFormat(pattern = "MM-dd-yyyy")

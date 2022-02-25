@@ -10,8 +10,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cogent.fooddeliveryapp.IdNotFoundException;
@@ -30,17 +29,18 @@ import com.cogent.fooddeliveryapp.repository.FoodRepository;
 
 /**
  * @author : Ki Beom Lee
- * @time : 2022. 2. 22.-¿ÀÀü 9:22:37
+ * @time : 2022. 2. 22.-ï¿½ï¿½ï¿½ï¿½ 9:22:37
  */
 @RestController
-@RequestMapping("/food")
+@RequestMapping("/api/food")
 @Validated  // to use with min 
 //validated vs valid  : to use with min / validate received values 
 public class FoodController {
 	@Autowired
 	FoodRepository foodRepository; 
 	
-	@PostMapping("")
+	@PostMapping("/")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?>  registerFood(@Valid @RequestBody FoodDto food) {
 		
 		FoodDto food2 = foodRepository.save(food);

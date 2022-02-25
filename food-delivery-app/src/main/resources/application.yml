@@ -1,7 +1,5 @@
 server:
   port: 9015
-  servlet:
-    context-path: /api
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/jpa_db
@@ -17,10 +15,10 @@ spring:
     hibernate:
       naming:
         physical-strategy: com.cogent.fooddeliveryapp.utils.CustomNamingStrategy
-      ddl-auto: update  
-        
+      ddl-auto: update    
+      
 com:
   cogent:
     fooddeliveryapp:
-      jwtSecret:foodapp
-      jwtExpirationMs:86400000    
+      jwtSecret: foodapp
+      jwtExpirationMs: 86400000
