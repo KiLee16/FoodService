@@ -26,7 +26,7 @@ import com.cogent.fooddeliveryapp.security.services.UserDetailsImpl;
  * @author : Ki Beom Lee
  * @time : 2022. 2. 23.-오후 2:40:13
  */
-
+// one per filter 
 public class AuthTokenFilter extends OncePerRequestFilter {
 	
 	@Autowired
@@ -60,13 +60,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 			logger.error(e.getMessage());
 			logger.error("can't set user authentication{}"+ e);
 		}
-		filterChain.doFilter(request, response);  // will call next filter/DS
+		filterChain.doFilter(request, response);  // will call next filter/DS(dispacher servlet)
 		// once we will ge it then validate it.
 		
 		
 		
 	}
-	
+	// extract token 
 	private String parseJwt(HttpServletRequest request) {
 		String headerAuth = request.getHeader("Authorization") ;
 		if(StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {

@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,7 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // will handle all exceptions which are thrown by the controller/restcontroller
 // using throws.
 public class ControllerAdvice extends ResponseEntityExceptionHandler implements AuthenticationEntryPoint{
-//	public class ControllerAdvice  implements AuthenticationEntryPoint{
+
 	
 	private static final Logger logger = LoggerFactory.getLogger(ControllerAdvice.class);
 	
@@ -58,7 +59,7 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler implements 
 	}
 
 	@Override
-//	@ExceptionHandler(MethodArgumentNotValidException.class)
+////	@ExceptionHandler(MethodArgumentNotValidException.class)
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
@@ -100,6 +101,16 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler implements 
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
 		apiError.setMessage(e.getMessage());
 		apiError.setDebugMessage("check the type as integer");
+
+		return buildResponseEntity(apiError);
+	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	protected ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
+
+		ApiError apiError = new ApiError(HttpStatus.FORBIDDEN);
+		apiError.setMessage(e.getMessage());
+		apiError.setDebugMessage("Only admin can access");
 
 		return buildResponseEntity(apiError);
 	}

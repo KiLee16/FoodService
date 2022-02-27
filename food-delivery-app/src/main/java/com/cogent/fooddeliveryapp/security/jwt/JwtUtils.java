@@ -34,7 +34,8 @@ public class JwtUtils {
 	// generate token
 	public String generateToken(Authentication authentication) {
 		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal(); // get credentials
-		return Jwts.builder().setSubject(userPrincipal.getUsername()).setIssuedAt(new Date())
+		return Jwts.builder().setSubject(userPrincipal.getUsername())
+				.setIssuedAt(new Date())
 				.setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 
@@ -43,7 +44,7 @@ public class JwtUtils {
 	// valid token
 	public boolean validateJwtToken(String authToken) {
 		try {
-			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJwt(authToken);
+			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
 			return true;
 		} catch (ExpiredJwtException e) {
 
@@ -65,7 +66,7 @@ public class JwtUtils {
 	public String getUsernameFromJwtToken(String token) {
 		return Jwts.parser() // compact --> java obejct 
 				.setSigningKey(jwtSecret) // secret key --> encoding done 
-				.parseClaimsJwt(token) // provide actual token 
+				.parseClaimsJws(token) // provide actual token 
 				.getBody() // extracting the body content (payload info)
 				.getSubject(); // extracting the subject 
 	}

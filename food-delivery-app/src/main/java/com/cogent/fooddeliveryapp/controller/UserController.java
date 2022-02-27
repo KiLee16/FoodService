@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +37,7 @@ import com.cogent.fooddeliveryapp.service.UserService;
 
 @RestController
 // /api
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
 	@Autowired
@@ -43,7 +45,11 @@ public class UserController {
 
 	@Autowired
 	private RoleRepository roleRepository;
-
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteByUserId(@PathVariable("id") Long id) {
 		// TODO: process DELETE request
@@ -61,10 +67,10 @@ public class UserController {
 		// if not then throw exception.
 
 	}
-
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable("id") long id) {
-
+		
 		User user = userService.getUserById(id).orElseThrow(() -> new NoDataFoundException("data not available"));
 		// DTO ===> UserResponse()
 		UserResponse userResponse = new UserResponse();
@@ -90,7 +96,7 @@ public class UserController {
 		userResponse.setRoles(roles);
 		return ResponseEntity.status(200).body(userResponse);
 	}
-
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value = "/")
 	public ResponseEntity<?> getAllUsers() {
 
@@ -127,7 +133,7 @@ public class UserController {
 			throw new NoDataFoundException("no users are there");
 		}
 	}
-
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/register")
 	public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signupRequest) {
 		// can u create user object?
@@ -185,17 +191,17 @@ public class UserController {
 		return ResponseEntity.status(201).body(user2);
 
 	}
-
-	@PutMapping("/employees/{id}")
+	@PreAuthorize("hasRole('ADMIN')" + "|| hasRole('USER')")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<?> updateUser(@PathVariable(value = "id") Long id, @Valid @RequestBody UpdateRequest info) {
 
-		User previousData = userService.getUserById(info.getId()).orElseThrow(() -> new MyOwnException("no user"));
 		User user = new User();
 		user.setDoj(info.getDoj());
 		user.setEmail(info.getEmail());
-
+		user.setId(id);
 		user.setUsername(info.getName());
-		user.setPassword(info.getPassword());
+		user.setPassword(passwordEncoder.encode(info.getPassword()));
+		
 		Set<Address> addresses = new HashSet<>();
 		info.getAddress().forEach(e -> {
 			Address address = new Address();
@@ -237,7 +243,7 @@ public class UserController {
 		user.setRoles(roles);
 		User updated = userService.updateUser(user, id);
 		
-		return ResponseEntity.status(201).body(user);
+		return ResponseEntity.status(201).body(updated);
 
 	}
 	

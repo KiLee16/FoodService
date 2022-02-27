@@ -55,15 +55,23 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> signin(@Valid @RequestBody SigninRequest signinRequest ){
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getUsername(), signinRequest.getPassword()));
+		/*
+		 * Interface defining the minimum security information associated with 
+		  the current threadof execution.
+			The security context is stored in a SecurityContextHolder.
+			
+		* Changes the currently authenticated principal, or removes the 
+			authenticationinformation.
+
+		 */
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
 		String jwt = jwtUtils.generateToken(authentication);
-		
+		//get user data/ principal
 		UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+		
 		List<String> roles = userDetailsImpl.getAuthorities().stream().map(e -> e.getAuthority()).collect(Collectors.toList());
-		
-		
-		
-		
+		//return new token 
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetailsImpl.getId(), userDetailsImpl.getUsername(), userDetailsImpl.getEmail(), roles )); 
 		
 	}
@@ -127,7 +135,13 @@ public class AuthController {
 		User user2 = userService.addUser(user);
 		
 		return ResponseEntity.status(201).body(user2);
-		
+		// java ---> Json ----> jackson api
+//		1xxs – Informational responses: The server is thinking through the request.
+//		2xxs – Success! The request was successfully completed and the server gave the browser the expected response.
+//		3xxs – Redirection: You got redirected somewhere else. The request was received, but there’s a redirect of some kind.
+//		4xxs – Client errors: Page not found. The site or page couldn’t be reached. (The request was made, but the page isn’t valid — this is an error on the website’s side of the conversation and often appears when a page doesn’t exist on the site.)
+//		5xxs – Server errors: Failure. A valid request was made by the client but the server failed to complete the request.
+
 		
 	}
 	
