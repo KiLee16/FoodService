@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
+	//provice authentication manger obejct
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		//core part of the security -> we can restrict the access of endpoints through this config.
 		//we can set unauthorized access through this. 
-		//we can provide direct go  access for sign up and sign in(authorizing hte res).
+		//we can provide direct go  access for sign up and sign in(authorizing the res).
 		//apply token validation for end points.
 		//cors:
 		//

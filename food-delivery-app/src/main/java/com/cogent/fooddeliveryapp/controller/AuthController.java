@@ -64,7 +64,7 @@ public class AuthController {
 			authenticationinformation.
 
 		 */
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+		SecurityContextHolder.getContext().setAuthentication(authentication); //singleton
 		
 		String jwt = jwtUtils.generateToken(authentication);
 		//get user data/ principal
