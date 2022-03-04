@@ -1,0 +1,153 @@
+<h3 class="text-center">New users please register here</h3>
+<div class="row">
+  <!-- Payload from register api from backend App -->
+  <div class="col-md-6 offset-md-3">
+    <div class="signup-form">
+      <form
+        (ngSubmit)="registerSubmit()"
+        role="form"
+        class="mt-5 border p-4 bg-light shadow"
+      >
+        <h4 class="mb-5 text-secondary">Register Your Account</h4>
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label>Email<span class="text-danger">*</span></label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter Email"
+              [(ngModel)]="register.email"
+            />
+          </div>
+
+          <div class="mb-3 col-md-6">
+            <label>Name<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="username"
+              class="form-control"
+              placeholder="Enter Name"
+              [(ngModel)]="register.username"
+            />
+          </div>
+
+          <div class="mb-3 col-md-12">
+            <label>Password<span class="text-danger">*</span></label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter Password"
+              [(ngModel)]="register.password"
+            />
+          </div>
+          <div class="mb-3 col-md-12">
+            <label>Confirm Password<span class="text-danger">*</span></label>
+            <input
+              type="password"
+              name="confirmpassword"
+              class="form-control"
+              placeholder="Confirm Password"
+              [(ngModel)]="register.confirmPassword"
+            />
+          </div>
+          <div class="mb-3 col-md-12">
+            <label>Address</label>
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label>House Number<span class="text-danger">*</span></label>
+            <input
+              type="number"
+              name="houseno"
+              class="form-control"
+              [(ngModel)]="register.address.houseno"
+              placeholder="Enter House Number"
+            />
+          </div>
+
+          <div class="mb-3 col-md-8">
+            <label>Street<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="street"
+              class="form-control"
+              placeholder="Enter street"
+              [(ngModel)]="register.address.street"
+            />
+          </div>
+
+          <div class="mb-3 col-md-6">
+            <label>City<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="city"
+              class="form-control"
+              placeholder="Enter City"
+              [(ngModel)]="register.address.city"
+            />
+          </div>
+          <div class="mb-3 col-md-6">
+            <label>State<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="state"
+              class="form-control"
+              placeholder="Enter State"
+              [(ngModel)]="register.address.state"
+            />
+          </div>
+          <div class="mb-3 col-md-6">
+            <label>Country<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="country"
+              class="form-control"
+              placeholder="Enter Country"
+              [(ngModel)]="register.address.country"
+            />
+          </div>
+          <div class="mb-3 col-md-6">
+            <label>Zip<span class="text-danger">*</span></label>
+            <input
+              type="number"
+              name="zip"
+              class="form-control"
+              placeholder="Enter Zip"
+              [(ngModel)]="register.address.zip"
+            />
+          </div>
+
+          <div class="mb-3 col-md-6">
+            <label>Date of joining<span class="text-danger">*</span></label>
+            <input
+              type="date"
+              name="doj"
+              class="form-control"
+              placeholder="Enter DOJ"
+              [(ngModel)]="register.doj"
+            />
+          </div>
+          <div class="mb-3 col-md-6">
+            <label>Roles<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="roles"
+              class="form-control"
+              placeholder="Enter role"
+              [(ngModel)]="register.roles"
+            />
+          </div>
+
+          <div class="col-md-12">
+            <button class="btn btn-primary float-end">Signup Now</button>
+          </div>
+        </div>
+      </form>
+      <p class="text-center mt-3 text-secondary">
+        If you have account, Please <a href="#">Login Now</a>
+      </p>
+    </div>
+  </div>
+</div>

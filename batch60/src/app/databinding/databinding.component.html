@@ -1,0 +1,16 @@
+<p>databinding works!</p>
+{{ userName }}
+<hr />
+{{ myClick() }}
+
+<button (click)="EventFunction()">click me</button>
+<hr />
+<h3 style="color: red">Property binding</h3>
+<input type="text" value="{{ userName }}" />
+<input type="Text" [value]="userName" />
+
+<hr />
+<h3 style="color: blue">Directive Binding</h3>
+<p [ngClass]="{ redBorder: true }">is this style</p>
+
+<p [ngStyle]="{ color: 'green' }">is this also style</p>
